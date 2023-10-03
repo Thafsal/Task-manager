@@ -1,11 +1,23 @@
-const getallTasks = (req, res) => {
-  res.send("all items in the tasks");
+const Task = require("../models/task");
+
+const getallTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find({})
+  res.status(200).json({ tasks });
+  } catch (error) {
+    res.status(500).json({msg:error.errors.name.message})
+  }
 };
 const getTask = (req, res) => {
-  res.json({id:req.params.id});
+  res.json({ id: req.params.id });
 };
-const createTasks = (req, res) => {
-  res.json(req.body);
+const createTasks = async (req, res) => {
+  try {
+    const task = await Task.create(req.body);
+  res.status(201).json({ task });
+  } catch (error) {
+    res.status(500).json({msg:error.errors.name.message})
+  }
 };
 const updateTasks = (req, res) => {
   res.send("update task");
@@ -19,5 +31,5 @@ module.exports = {
   getTask,
   createTasks,
   updateTasks,
-  deleteTasks
+  deleteTasks,
 };
